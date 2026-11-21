@@ -19,7 +19,7 @@ user_messages = {}
 
 @dp.message(CommandStart())
 async def start(msg: Message):
-    await msg.answer("👋 Привет! Напиши сюда свой отзыв или предложение — я передам его команде.")
+    await msg.answer("привет! напиши сюда свой отзыв или предложение — я передам его команде.")
 
 @dp.message()
 async def handle_feedback(msg: Message):
@@ -28,24 +28,24 @@ async def handle_feedback(msg: Message):
         if reply_to_id in user_messages:
             target_user = user_messages[reply_to_id]
             try:
-                await bot.send_message(target_user, f"💬 Ответ от команды:\n\n{msg.text}")
-                await msg.answer("✅ Отправлено пользователю.")
+                await bot.send_message(target_user, f"ответ от команды:\n\n{msg.text}")
+                await msg.answer("отправлено пользователю.")
             except Exception as e:
-                await msg.answer(f"❌ Ошибка: {e}")
+                await msg.answer(f"ошибка: {e}")
         return
 
     if msg.from_user.id == ADMIN_ID:
         return
 
     user = msg.from_user
-    header = f"📩 <b>Новое обращение</b>\nОт: {user.full_name} (@{user.username or 'нет'})\nID: <code>{user.id}</code>"
+    header = f"<b>новое обращение</b>\nОт: {user.full_name} (@{user.username or 'нет'})\nID: <code>{user.id}</code>"
     
     sent_header = await bot.send_message(ADMIN_ID, header)
     forwarded = await msg.forward(ADMIN_ID)
     
     user_messages[forwarded.message_id] = user.id
     
-    await msg.answer("✅ Спасибо! Твоё сообщение получено.")
+    await msg.answer("спасибо! Твоё сообщение получено.")
 
 @app.post("/webhook")
 async def webhook(request: Request):
